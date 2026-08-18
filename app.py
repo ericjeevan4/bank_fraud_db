@@ -779,6 +779,31 @@ def api_predict():
     })
 
 # ---------------------------------------------------------
+# GET CSV DETECTION HISTORY
+# ---------------------------------------------------------
+
+@app.route("/api/history", methods=["GET"])
+def get_history():
+    try:
+        history = list(
+            fraud_accounts_collection.find(
+                {},
+                {"_id": 0}
+            ).sort("upload_time", -1)
+        )
+
+        return jsonify({
+            "success": True,
+            "history": history
+        })
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+# ---------------------------------------------------------
 # RENDER SERVER
 # ---------------------------------------------------------
 
