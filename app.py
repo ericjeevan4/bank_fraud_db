@@ -746,7 +746,13 @@ def api_predict():
             ),
             "fraud_transactions": transactions
         })
-
+    # -----------------------------------------------------
+    # SAVE FRAUD ACCOUNTS TO MONGODB
+    # -----------------------------------------------------
+    
+    if fraud_accounts:
+        fraud_accounts_collection.insert_many(fraud_accounts)
+        
     # -----------------------------------------------------
     # API RESPONSE
     # -----------------------------------------------------
