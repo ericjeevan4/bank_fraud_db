@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
+import uuid
+from datetime import datetime
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -747,11 +749,20 @@ def api_predict():
             "fraud_transactions": transactions
         })
     # -----------------------------------------------------
-    # SAVE FRAUD ACCOUNTS TO MONGODB
+    # SAVE CSV UPLOAD TO MONGODB
     # -----------------------------------------------------
     
     if fraud_accounts:
-        fraud_accounts_collection.insert_many(fraud_accounts)
+    
+        upload_id = str(uuid.uuid4())
+    
+        upload_record = {
+            "upload_id": upload_id,
+            "upload_time": datetime.utcnow(),
+            "fraud_accounts": fraud_accounts
+        }
+    
+        fraud_accounts_collection.insert_one(upload_record)
         
     # -----------------------------------------------------
     # API RESPONSE
