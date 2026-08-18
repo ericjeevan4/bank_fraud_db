@@ -4,9 +4,25 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
+from pymongo import MongoClient
 
 app = Flask(__name__)
 CORS(app)
+
+# ---------------------------------------------------------
+# MONGODB CONNECTION
+# ---------------------------------------------------------
+
+MONGO_URI = os.getenv("MONGODB_URI")
+
+if not MONGO_URI:
+    raise RuntimeError("MONGODB_URI environment variable is not set.")
+
+client = MongoClient(MONGO_URI)
+
+db = client["fraudshield"]
+
+fraud_accounts_collection = db["csv_fraud_accounts"]
 
 # ---------------------------------------------------------
 # LOAD TRAINED MODEL
