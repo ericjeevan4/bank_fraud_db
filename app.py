@@ -753,12 +753,18 @@ def api_predict():
     # -----------------------------------------------------
     
     if fraud_accounts:
-    
+
         upload_id = str(uuid.uuid4())
     
         upload_record = {
             "upload_id": upload_id,
             "upload_time": datetime.utcnow(),
+            "file_name": file.filename,
+            "total_transactions": int(len(test_csv)),
+            "predicted_fraud": int(len(fraud_transactions)),
+            "predicted_nonfraud": int(
+                len(test_csv) - len(fraud_transactions)
+            ),
             "fraud_accounts": fraud_accounts
         }
     
